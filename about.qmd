@@ -1,0 +1,36 @@
+# AJ Lapicola
+ajlapicola@gmail.com
+
+## Education
+### Brigham Young University
+Bachelor of Science/Arts: Statistics, Emphasis in Data Science
+
+- 4.0 GPA
+- Russel M. Nelson Presidential Scholarship (Tuition and a half)
+- Statistical Modeling I & II, Applied R Programming, Intro to Data Science, Data Structures, Probability & Inference, Bayesian Statistics, Linear Algebra, Calculus I & II, Data Science Ecosystems
+
+## Experience
+### Brigham Young University
+*Research Assistant*
+
+- Apply data science techniques to real world marketing problems across 4 projects in support of academic research initiatives.
+- Clean, preprocess, and structure datasets containing over 200 million rows and 50+ features to ensure high quality analytical inputs.
+- Conduct exploratory data analysis on 15 datasets, identifying patterns that inform research hypotheses
+- Run 20+ simulations to test behavioral and strategic hypotheses contributing to ongoing research manuscripts
+- Collaborate on 2 large-scale Bayesian statistical models used to generate publication-worthy insights
+
+
+### Front Range Recreation
+*Manager*
+
+- Supervised a team of 10 lifeguards to ensure facility was run in a safe, clean and professional manner
+- Created and implemented 12 weekly schedules that ensured all shifts were accounted for 
+- Worked my way up to managerial position after 1 month of work
+
+## Volunteer Experience
+### Church of Jesus Christ of Latter-Day Saints
+*Full-time Representative*
+
+- Oversaw 16 volunteers at a time, created goals with them and conducted training 
+- Trained 5 leadership volunteers in their new roles and responsibilities.
+- Worked 12+ hour days, 6 days a week because I was passionate about the organization.

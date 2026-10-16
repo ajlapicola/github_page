@@ -1,0 +1,109 @@
+# Working With the Stringr Package
+
+**AJ Lapicola**
+
+In survey responses, product names, messages, filenames, and many other datasets you will run into data in the form of strings. Manipulating this data can be difficult and time-consuming. The `stringr` package in R provides a clear and extensive set of tools by which string manipulation can be done with ease. This post will introduce the basics of the `stringr` package, demonstrating how one can accomplish basic text manipulation effectively. At the conclusion of this post, you will be able to use the `stringr` package to:
+
+1.  Find a pattern
+2.  Pull out part of a string
+3.  Change text
+4.  Remove text
+
+## An Introduction to Patterns
+
+The `stringr` package uses a `pattern` to identify text of interest. A `pattern` relies on regular expressions (regex) allowing for flexible string identification. In simple cases, a plain string like "Apple" works for identification, but for more complex cases, regex lets you describe the kind of text you want to find instead of giving one exact string. This post will not dive deep into the world of regular expressions, but below is a table with some common symbols in regular expressions and their use cases.
+
+| Symbol | Description | Examples |
+|:---------------:|---------------------------|:--------------------------:|
+| `\d` | A digit | \\\\d+ matches "1" or "75" |
+| `\s` | A whitespace character | \\\\s matches " " |
+| `.` | Any single character | .\* matches "abcdef" or "798abc" |
+| `+` | One or more of preceding character | a+ matches "aaaaaa" or "a" |
+| `*` | Zero or more of preceding character | ab\*c matches "ac" or "abbbc" |
+| `?` | Zero or one of preceding character | colou?r matches "color" or "colour" |
+| `[abc]` | Any character listed in brackets | \[bc\]at matches "bat" or "cat" |
+
+: Regular Expression Cheat Sheet
+
+Learning to master regular expressions can make it much easier to find, extract and modify text.
+
+## Four Common `stringr` Tasks
+
+There are several functions within the `stringr` package that have distinct functions. This post will address four of the most common functions and their uses.
+
+### `str_detect()`
+
+`str_detect(string, pattern, negate = FALSE)` checks each value in `string` for a match to `pattern` and returns `TRUE` or `FALSE`. Set `negate = TRUE` to reverse the results and find values that *don’t* match.
+
+### `str_extract()`
+
+`str_extract(string, pattern, group = NULL)` returns the first matching part of each `string`; if there is no match, it returns `NA`. The optional `group` argument lets you return a specific captured `group` from the `pattern` instead of the full match.
+
+### `str_replace()`
+
+`str_replace(string, pattern, replacement)` finds `pattern` in each `string` and substitutes it with `replacement`. It replaces only the first match in each string; use `str_replace_all()` to replace every match.
+
+### `str_remove()`
+
+`str_remove(string, pattern)` removes the first part of each string that matches `pattern`. Use `str_remove_all()` to remove every match.
+
+## Practical Example
+
+Consider an example analysis on the `starwars` dataset from the `dplyr` package. This dataset contains information on several characters from the star wars universe. Let's begin by examining the first few rows of the data to get an understanding of what columns exist.
+
+```{r, message=FALSE}
+# Load the tidyverse containing the stringr package
+library(tidyverse)
+
+# Filter starwars for those with hair and eye colors.
+starwars_filtered <- starwars |> 
+    drop_na(hair_color, eye_color)
+
+# Examine the first few rows of the starwars dataset
+head(starwars_filtered)
+```
+
+Let's suppose we want to know which characters have multi-colored hair. We can filter for these characters with the `str_detect` function. We set our pattern as `,` to catch characters with multiple hair colors listed.
+
+```{r}
+starwars_filtered |> 
+    select(name, hair_color) |> 
+    filter(str_detect(hair_color, pattern = ','))
+```
+
+Now let's create a new column that contains the first hair color listed. For individuals without multi-colored hair, we'll return their hair color as written. We can accomplish this using `str_extract`. This regex pattern returns a match for any string until the comma.
+
+```{r}
+starwars_filtered |> 
+    select(name, hair_color) |> 
+    mutate(
+        primary_hair_color = 
+        str_extract(hair_color, "^[^,]+")
+    ) |> 
+    head()
+```
+
+Looking at eye color, some multi-colored eyes are written with a comma and some are written with a hyphen. Let's standardize this using `str_replace`.
+
+```{r}
+starwars_filtered |> 
+    select(name, eye_color) |> 
+    mutate(eye_color = str_replace(eye_color, ",\\s", "-")) |> 
+    # str_detect allows us to see these specific rows
+    filter(str_detect(eye_color, pattern = '-'))  
+```
+
+However, if we wanted just the first color listed, we could use `str_remove` to return only the first color listed.
+
+```{r}
+starwars_filtered |> 
+    select(name, eye_color) |> 
+    mutate(eye_color = str_remove(eye_color, "[,-].*")) |> 
+    head()
+```
+
+As shown in these examples, the `stringr` package allows us to efficiently find patterns, extract useful information, and prepare text for further analysis.
+
+## Conclusion
+
+When working with text in data, simple patterns tend to emerge. First detecting, then extracting those patterns, changing and removing text as needed, allows us to analyze those patterns. The `stringr` package is the go-to tool for accomplishing these tasks in R. Take some time to try analyzing the next text data you run into using the `stringr` package. For further information visit the `stringr` [reference page](https://stringr.tidyverse.org/reference/index.html) or checkout this [regular expression guide](https://stringr.tidyverse.org/articles/regular-expressions.html) made for help with `stringr`. Try these functions on a dataset of your own and see what useful information its text contains.

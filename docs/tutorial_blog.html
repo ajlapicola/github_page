@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -105,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./tutorial_blog.html" aria-current="page"> 
-<span class="menu-text">tutorial_blog.html</span></a>
+<span class="menu-text">Working With the Stringr Package</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -118,8 +153,26 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#working-with-the-stringr-package" id="toc-working-with-the-stringr-package" class="nav-link active" data-scroll-target="#working-with-the-stringr-package">Working With the Stringr Package</a>
+  <ul class="collapse">
+  <li><a href="#an-introduction-to-patterns" id="toc-an-introduction-to-patterns" class="nav-link" data-scroll-target="#an-introduction-to-patterns">An Introduction to Patterns</a></li>
+  <li><a href="#four-common-stringr-tasks" id="toc-four-common-stringr-tasks" class="nav-link" data-scroll-target="#four-common-stringr-tasks">Four Common <code>stringr</code> Tasks</a>
+  <ul class="collapse">
+  <li><a href="#str_detect" id="toc-str_detect" class="nav-link" data-scroll-target="#str_detect"><code>str_detect()</code></a></li>
+  <li><a href="#str_extract" id="toc-str_extract" class="nav-link" data-scroll-target="#str_extract"><code>str_extract()</code></a></li>
+  <li><a href="#str_replace" id="toc-str_replace" class="nav-link" data-scroll-target="#str_replace"><code>str_replace()</code></a></li>
+  <li><a href="#str_remove" id="toc-str_remove" class="nav-link" data-scroll-target="#str_remove"><code>str_remove()</code></a></li>
+  </ul></li>
+  <li><a href="#practical-example" id="toc-practical-example" class="nav-link" data-scroll-target="#practical-example">Practical Example</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -127,8 +180,198 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="working-with-the-stringr-package" class="level1">
+<h1>Working With the Stringr Package</h1>
+<p><strong>AJ Lapicola</strong></p>
+<p>In survey responses, product names, messages, filenames, and many other datasets you will run into data in the form of strings. Manipulating this data can be difficult and time-consuming. The <code>stringr</code> package in R provides a clear and extensive set of tools by which string manipulation can be done with ease. This post will introduce the basics of the <code>stringr</code> package, demonstrating how one can accomplish basic text manipulation effectively. At the conclusion of this post, you will be able to use the <code>stringr</code> package to:</p>
+<ol type="1">
+<li>Find a pattern</li>
+<li>Pull out part of a string</li>
+<li>Change text</li>
+<li>Remove text</li>
+</ol>
+<section id="an-introduction-to-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="an-introduction-to-patterns">An Introduction to Patterns</h2>
+<p>The <code>stringr</code> package uses a <code>pattern</code> to identify text of interest. A <code>pattern</code> relies on regular expressions (regex) allowing for flexible string identification. In simple cases, a plain string like “Apple” works for identification, but for more complex cases, regex lets you describe the kind of text you want to find instead of giving one exact string. This post will not dive deep into the world of regular expressions, but below is a table with some common symbols in regular expressions and their use cases.</p>
+<table class="caption-top table">
+<caption>Regular Expression Cheat Sheet</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 37%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Symbol</th>
+<th>Description</th>
+<th style="text-align: center;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>\d</code></td>
+<td>A digit</td>
+<td style="text-align: center;">\\d+ matches “1” or “75”</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>\s</code></td>
+<td>A whitespace character</td>
+<td style="text-align: center;">\\s matches ” ”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>.</code></td>
+<td>Any single character</td>
+<td style="text-align: center;">.* matches “abcdef” or “798abc”</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>+</code></td>
+<td>One or more of preceding character</td>
+<td style="text-align: center;">a+ matches “aaaaaa” or “a”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>*</code></td>
+<td>Zero or more of preceding character</td>
+<td style="text-align: center;">ab*c matches “ac” or “abbbc”</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>?</code></td>
+<td>Zero or one of preceding character</td>
+<td style="text-align: center;">colou?r matches “color” or “colour”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[abc]</code></td>
+<td>Any character listed in brackets</td>
+<td style="text-align: center;">[bc]at matches “bat” or “cat”</td>
+</tr>
+</tbody>
+</table>
+<p>Learning to master regular expressions can make it much easier to find, extract and modify text.</p>
+</section>
+<section id="four-common-stringr-tasks" class="level2">
+<h2 class="anchored" data-anchor-id="four-common-stringr-tasks">Four Common <code>stringr</code> Tasks</h2>
+<p>There are several functions within the <code>stringr</code> package that have distinct functions. This post will address four of the most common functions and their uses.</p>
+<section id="str_detect" class="level3">
+<h3 class="anchored" data-anchor-id="str_detect"><code>str_detect()</code></h3>
+<p><code>str_detect(string, pattern, negate = FALSE)</code> checks each value in <code>string</code> for a match to <code>pattern</code> and returns <code>TRUE</code> or <code>FALSE</code>. Set <code>negate = TRUE</code> to reverse the results and find values that <em>don’t</em> match.</p>
+</section>
+<section id="str_extract" class="level3">
+<h3 class="anchored" data-anchor-id="str_extract"><code>str_extract()</code></h3>
+<p><code>str_extract(string, pattern, group = NULL)</code> returns the first matching part of each <code>string</code>; if there is no match, it returns <code>NA</code>. The optional <code>group</code> argument lets you return a specific captured <code>group</code> from the <code>pattern</code> instead of the full match.</p>
+</section>
+<section id="str_replace" class="level3">
+<h3 class="anchored" data-anchor-id="str_replace"><code>str_replace()</code></h3>
+<p><code>str_replace(string, pattern, replacement)</code> finds <code>pattern</code> in each <code>string</code> and substitutes it with <code>replacement</code>. It replaces only the first match in each string; use <code>str_replace_all()</code> to replace every match.</p>
+</section>
+<section id="str_remove" class="level3">
+<h3 class="anchored" data-anchor-id="str_remove"><code>str_remove()</code></h3>
+<p><code>str_remove(string, pattern)</code> removes the first part of each string that matches <code>pattern</code>. Use <code>str_remove_all()</code> to remove every match.</p>
+</section>
+</section>
+<section id="practical-example" class="level2">
+<h2 class="anchored" data-anchor-id="practical-example">Practical Example</h2>
+<p>Consider an example analysis on the <code>starwars</code> dataset from the <code>dplyr</code> package. This dataset contains information on several characters from the star wars universe. Let’s begin by examining the first few rows of the data to get an understanding of what columns exist.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the tidyverse containing the stringr package</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter starwars for those with hair and eye colors.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>starwars_filtered <span class="ot">&lt;-</span> starwars <span class="sc">|&gt;</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(hair_color, eye_color)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the first few rows of the starwars dataset</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(starwars_filtered)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Luke Sky…    172    77 blond      fair       blue            19   male  mascu…
+2 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
+3 Leia Org…    150    49 brown      light      brown           19   fema… femin…
+4 Owen Lars    178   120 brown, gr… light      blue            52   male  mascu…
+5 Beru Whi…    165    75 brown      light      blue            47   fema… femin…
+6 Biggs Da…    183    84 black      light      brown           24   male  mascu…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+</div>
+</div>
+<p>Let’s suppose we want to know which characters have multi-colored hair. We can filter for these characters with the <code>str_detect</code> function. We set our pattern as <code>,</code> to catch characters with multiple hair colors listed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>starwars_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(name, hair_color) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(hair_color, <span class="at">pattern =</span> <span class="st">','</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  name           hair_color   
+  &lt;chr&gt;          &lt;chr&gt;        
+1 Owen Lars      brown, grey  
+2 Obi-Wan Kenobi auburn, white
+3 Wilhuff Tarkin auburn, grey </code></pre>
+</div>
+</div>
+<p>Now let’s create a new column that contains the first hair color listed. For individuals without multi-colored hair, we’ll return their hair color as written. We can accomplish this using <code>str_extract</code>. This regex pattern returns a match for any string until the comma.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>starwars_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(name, hair_color) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">primary_hair_color =</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_extract</span>(hair_color, <span class="st">"^[^,]+"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  name               hair_color  primary_hair_color
+  &lt;chr&gt;              &lt;chr&gt;       &lt;chr&gt;             
+1 Luke Skywalker     blond       blond             
+2 Darth Vader        none        none              
+3 Leia Organa        brown       brown             
+4 Owen Lars          brown, grey brown             
+5 Beru Whitesun Lars brown       brown             
+6 Biggs Darklighter  black       black             </code></pre>
+</div>
+</div>
+<p>Looking at eye color, some multi-colored eyes are written with a comma and some are written with a hyphen. Let’s standardize this using <code>str_replace</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>starwars_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(name, eye_color) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">eye_color =</span> <span class="fu">str_replace</span>(eye_color, <span class="st">",</span><span class="sc">\\</span><span class="st">s"</span>, <span class="st">"-"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># str_detect allows us to see these specific rows</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(eye_color, <span class="at">pattern =</span> <span class="st">'-'</span>))  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  name           eye_color   
+  &lt;chr&gt;          &lt;chr&gt;       
+1 Obi-Wan Kenobi blue-gray   
+2 R4-P17         red-blue    
+3 Grievous       green-yellow</code></pre>
+</div>
+</div>
+<p>However, if we wanted just the first color listed, we could use <code>str_remove</code> to return only the first color listed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>starwars_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(name, eye_color) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">eye_color =</span> <span class="fu">str_remove</span>(eye_color, <span class="st">"[,-].*"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  name               eye_color
+  &lt;chr&gt;              &lt;chr&gt;    
+1 Luke Skywalker     blue     
+2 Darth Vader        yellow   
+3 Leia Organa        brown    
+4 Owen Lars          blue     
+5 Beru Whitesun Lars blue     
+6 Biggs Darklighter  brown    </code></pre>
+</div>
+</div>
+<p>As shown in these examples, the <code>stringr</code> package allows us to efficiently find patterns, extract useful information, and prepare text for further analysis.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>When working with text in data, simple patterns tend to emerge. First detecting, then extracting those patterns, changing and removing text as needed, allows us to analyze those patterns. The <code>stringr</code> package is the go-to tool for accomplishing these tasks in R. Take some time to try analyzing the next text data you run into using the <code>stringr</code> package. For further information visit the <code>stringr</code> <a href="https://stringr.tidyverse.org/reference/index.html">reference page</a> or checkout this <a href="https://stringr.tidyverse.org/articles/regular-expressions.html">regular expression guide</a> made for help with <code>stringr</code>. Try these functions on a dataset of your own and see what useful information its text contains.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

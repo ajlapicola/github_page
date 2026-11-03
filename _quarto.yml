@@ -10,6 +10,7 @@ website:
         text: Home
       - about.qmd
       - tutorial_blog.qmd
+      - data_acquisition_blog.qmd
 
 format:
   html:

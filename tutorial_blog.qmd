@@ -14,7 +14,7 @@ In survey responses, product names, messages, filenames, and many other datasets
 The `stringr` package uses a `pattern` to identify text of interest. A `pattern` relies on regular expressions (regex) allowing for flexible string identification. In simple cases, a plain string like "Apple" works for identification, but for more complex cases, regex lets you describe the kind of text you want to find instead of giving one exact string. This post will not dive deep into the world of regular expressions, but below is a table with some common symbols in regular expressions and their use cases.
 
 | Symbol | Description | Examples |
-|:---------------:|---------------------------|:--------------------------:|
+|:----------------:|---------------------------|:-------------------------:|
 | `\d` | A digit | \\\\d+ matches "1" or "75" |
 | `\s` | A whitespace character | \\\\s matches " " |
 | `.` | Any single character | .\* matches "abcdef" or "798abc" |

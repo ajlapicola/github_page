@@ -20,8 +20,7 @@ To collect the fireball records, I used Python’s `requests` library to send a 
 
 To prepare the data for analysis, I read the CSV back into pandas, converted the date column to datetime format, and converted the latitude, longitude, altitude, energy, impact energy, and velocity columns to numeric values. Someone following a similar process can adjust the API parameters, retrieve JSON records, and convert them into a structured dataset for exploration.
 
-## EDA highlights: summary statistics, summary graphics, and/or information about final dataset (e.g., total sample size, counts of categorical variables, numerical summaries of numeric variables)
-What are the most interesting findings of your EDA?
+## Exploration Highlights
 ```{python}
 #| include: false
 
@@ -50,6 +49,8 @@ fireballs["speed"] = np.sqrt(
 fireballs.head()
 ```
 
+The dataset contains 360 fireball records and 13 columns. The three numeric variables used in this analysis, radiated energy, altitude, and calculated speed, have no missing values. 
+
 ### Summary Table
 ```{python}
 #| echo: False
@@ -72,13 +73,18 @@ summary["IQR"] = (
 #create dataframe and display info
 summary = summary[["count", "missing", "median", "IQR", "min", "max"]]
 
-print(f"Rows: {len(fireballs)}")
-print(f"Columns: {len(fireballs.columns)}")
+#print(f"Rows: {len(fireballs)}")
+#print(f"Columns: {len(fireballs.columns)}")
 
 summary
 ```
 
+Radiated energy has a median of 7.56 × 10¹⁰ joules and an interquartile range of 16.525 × 10¹⁰ joules. Its values range from 1.24 × 10¹⁰ to 37,500 × 10¹⁰ joules. Altitude at peak brightness has a median of 33.3 km and ranges from 14 to 90.5 km. Calculated entry speed has a median of about 17.44 km/s, with a range of about 9.77 to 71.07 km/s.
+
 ### Radiated Energy Distribution
+
+The energy histogram shows a strongly right-skewed distribution. Most recorded fireballs fall toward the lower end of the energy range, while a small number have much larger energy estimates, creating a long tail. The median being far below the maximum reflects this spread: a few very high-energy events are quite different from the typical record. A logarithmic scale makes both the concentration of lower-energy observations and the extreme values easier to see.
+
 ```{python}
 #| echo: False
 
@@ -100,6 +106,9 @@ plt.show()
 ```
 
 ### Associations
+
+The altitude plot shows a slight downward trend: fireballs that reach peak brightness at higher altitudes tend to have lower estimated radiated energy in this sample. However, the points are widely scattered around the line. Events at similar altitudes can have quite different energy estimates, so altitude alone does not closely predict a fireball’s energy.
+
 ```{python}
 #| echo: False
 
@@ -121,6 +130,8 @@ plt.ylabel("log10 radiated energy (10^10 joules)")
 plt.title("Altitude and Radiated Energy")
 plt.show()
 ```
+
+The speed plot has an almost horizontal trend line, suggesting little clear linear association between calculated entry speed and radiated energy. Most recorded speeds cluster between roughly 10 and 30 km/s, but energy varies widely within that range. The fastest events are not necessarily the most energetic, and the most energetic observation occurs at a more moderate speed.
 
 ```{python}
 #| echo: False
@@ -144,6 +155,17 @@ plt.title("Entry Speed and Radiated Energy")
 plt.show()
 ```
 
+Overall, altitude shows a weak negative pattern with radiated energy, while speed shows no obvious linear pattern. These plots describe associations in the 360 records analyzed; they do not establish that altitude or speed causes a fireball to release more energy.
+
+A fireball lasts only a moment, but the data let us look back after the flash is gone. Each record captures a few details of that brief event: where it reached peak brightness, how fast it was moving, and how much energy it radiated. Exploring those details didn’t lead to one simple explanation, but it did turn a list of detections into a closer look at events that are usually over before we can take them in.
+
 ### Further Resources
-Links to find further information and /or resources
-A link to your code in a separate GitHub repo
+For more information on Fireballs checkout the CNEOS webpage for an overview and introduction:
+[CNEOS Fireballs overview and data]("https://cneos.jpl.nasa.gov/fireballs/intro.html")
+If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more:
+[Fireball Data API documentation]("https://ssd-api.jpl.nasa.gov/doc/fireball.html")
+
+The detailed steps of my analysis can be viewed here:
+[Github Repo]("https://github.com/ajlapicola/data_acquisition")
+
+Thanks for reading!

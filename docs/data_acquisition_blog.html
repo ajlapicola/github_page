@@ -133,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#responsible-data-collection" id="toc-responsible-data-collection" class="nav-link" data-scroll-target="#responsible-data-collection">Responsible Data Collection</a></li>
   <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection">Data Collection</a></li>
-  <li><a href="#eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables" id="toc-eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables" class="nav-link" data-scroll-target="#eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables">EDA highlights: summary statistics, summary graphics, and/or information about final dataset (e.g., total sample size, counts of categorical variables, numerical summaries of numeric variables)</a>
+  <li><a href="#exploration-highlights" id="toc-exploration-highlights" class="nav-link" data-scroll-target="#exploration-highlights">Exploration Highlights</a>
   <ul class="collapse">
   <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">Summary Table</a></li>
   <li><a href="#radiated-energy-distribution" id="toc-radiated-energy-distribution" class="nav-link" data-scroll-target="#radiated-energy-distribution">Radiated Energy Distribution</a></li>
@@ -181,16 +181,12 @@ ul.task-list li input[type="checkbox"] {
 <p>To collect the fireball records, I used Python’s <code>requests</code> library to send a GET request to NASA/JPL’s <a href="https://ssd-api.jpl.nasa.gov/doc/fireball.html">CNEOS Fireball Data API</a>. I included parameters requiring records to have location, altitude, and entry velocity components, and requested the velocity fields. After checking the response for HTTP errors, I converted its JSON content into a pandas DataFrame, using the API’s <code>fields</code> list as column names. I saved this initial version as a CSV file in <code>data/raw</code>, preserving a copy of the data before cleaning.</p>
 <p>To prepare the data for analysis, I read the CSV back into pandas, converted the date column to datetime format, and converted the latitude, longitude, altitude, energy, impact energy, and velocity columns to numeric values. Someone following a similar process can adjust the API parameters, retrieve JSON records, and convert them into a structured dataset for exploration.</p>
 </section>
-<section id="eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables" class="level2">
-<h2 class="anchored" data-anchor-id="eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables">EDA highlights: summary statistics, summary graphics, and/or information about final dataset (e.g., total sample size, counts of categorical variables, numerical summaries of numeric variables)</h2>
-<p>What are the most interesting findings of your EDA?</p>
+<section id="exploration-highlights" class="level2">
+<h2 class="anchored" data-anchor-id="exploration-highlights">Exploration Highlights</h2>
+<p>The dataset contains 360 fireball records and 13 columns. The three numeric variables used in this analysis, radiated energy, altitude, and calculated speed, have no missing values.</p>
 <section id="summary-table" class="level3">
 <h3 class="anchored" data-anchor-id="summary-table">Summary Table</h3>
-<div id="b0bd702d" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 360
-Columns: 13</code></pre>
-</div>
+<div id="9def4c89" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
@@ -241,10 +237,12 @@ Columns: 13</code></pre>
 </div>
 </div>
 </div>
+<p>Radiated energy has a median of 7.56 × 10¹⁰ joules and an interquartile range of 16.525 × 10¹⁰ joules. Its values range from 1.24 × 10¹⁰ to 37,500 × 10¹⁰ joules. Altitude at peak brightness has a median of 33.3 km and ranges from 14 to 90.5 km. Calculated entry speed has a median of about 17.44 km/s, with a range of about 9.77 to 71.07 km/s.</p>
 </section>
 <section id="radiated-energy-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="radiated-energy-distribution">Radiated Energy Distribution</h3>
-<div id="4aadd4a4" class="cell" data-execution_count="3">
+<p>The energy histogram shows a strongly right-skewed distribution. Most recorded fireballs fall toward the lower end of the energy range, while a small number have much larger energy estimates, creating a long tail. The median being far below the maximum reflects this spread: a few very high-energy events are quite different from the typical record. A logarithmic scale makes both the concentration of lower-energy observations and the extreme values easier to see.</p>
+<div id="50672e4f" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -256,7 +254,8 @@ Columns: 13</code></pre>
 </section>
 <section id="associations" class="level3">
 <h3 class="anchored" data-anchor-id="associations">Associations</h3>
-<div id="1dd04b18" class="cell" data-execution_count="4">
+<p>The altitude plot shows a slight downward trend: fireballs that reach peak brightness at higher altitudes tend to have lower estimated radiated energy in this sample. However, the points are widely scattered around the line. Events at similar altitudes can have quite different energy estimates, so altitude alone does not closely predict a fireball’s energy.</p>
+<div id="e80dbae7" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -265,7 +264,8 @@ Columns: 13</code></pre>
 </div>
 </div>
 </div>
-<div id="7567d21f" class="cell" data-execution_count="5">
+<p>The speed plot has an almost horizontal trend line, suggesting little clear linear association between calculated entry speed and radiated energy. Most recorded speeds cluster between roughly 10 and 30 km/s, but energy varies widely within that range. The fastest events are not necessarily the most energetic, and the most energetic observation occurs at a more moderate speed.</p>
+<div id="7a9e16c3" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -274,10 +274,14 @@ Columns: 13</code></pre>
 </div>
 </div>
 </div>
+<p>Overall, altitude shows a weak negative pattern with radiated energy, while speed shows no obvious linear pattern. These plots describe associations in the 360 records analyzed; they do not establish that altitude or speed causes a fireball to release more energy.</p>
+<p>A fireball lasts only a moment, but the data let us look back after the flash is gone. Each record captures a few details of that brief event: where it reached peak brightness, how fast it was moving, and how much energy it radiated. Exploring those details didn’t lead to one simple explanation, but it did turn a list of detections into a closer look at events that are usually over before we can take them in.</p>
 </section>
 <section id="further-resources" class="level3">
 <h3 class="anchored" data-anchor-id="further-resources">Further Resources</h3>
-<p>Links to find further information and /or resources A link to your code in a separate GitHub repo</p>
+<p>For more information on Fireballs checkout the CNEOS webpage for an overview and introduction: <a href="&quot;https://cneos.jpl.nasa.gov/fireballs/intro.html&quot;">CNEOS Fireballs overview and data</a> If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more: <a href="&quot;https://ssd-api.jpl.nasa.gov/doc/fireball.html&quot;">Fireball Data API documentation</a></p>
+<p>The detailed steps of my analysis can be viewed here: <a href="&quot;https://github.com/ajlapicola/data_acquisition&quot;">Github Repo</a></p>
+<p>Thanks for reading!</p>
 
 
 </section>

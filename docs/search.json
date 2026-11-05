@@ -35,6 +35,41 @@
     "text": "When working with text in data, simple patterns tend to emerge. First detecting, then extracting those patterns, changing and removing text as needed, allows us to analyze those patterns. The stringr package is the go-to tool for accomplishing these tasks in R. Take some time to try analyzing the next text data you run into using the stringr package. For further information visit the stringr reference page or checkout this regular expression guide made for help with stringr. Try these functions on a dataset of your own and see what useful information its text contains."
   },
   {
+    "objectID": "data_acquisition_blog.html",
+    "href": "data_acquisition_blog.html",
+    "title": "Fireball Brightness",
+    "section": "",
+    "text": "AJ Lapicola"
+  },
+  {
+    "objectID": "data_acquisition_blog.html#introduction",
+    "href": "data_acquisition_blog.html#introduction",
+    "title": "Fireball Brightness",
+    "section": "Introduction",
+    "text": "Introduction\nMany of us have seen flashes of light streak across the sky, only to vanish in seconds. What we often call “shoooting stars” are in fact, meators. Most meteors are faint, but some blaze so brightly that they’re called fireballs. They begin as small pieces of rock or metal traveling through space; when they plunge into Earth’s atmosphere, they heat the surrounding air and shed material, creating a brilliant glow. NASA’s CNEOS database collects reports of some of these events, offering a glimpse of a dramatic process that usually lasts only moments.\nI’m curious about what these records can tell us about a fireball’s passage through the atmosphere. In particular, I want to explore whether altitude at peak brightness and entry speed are associated with how much energy a fireball radiates. Looking at these characteristics could help me better understand what more energetic fireballs have in common.\nHow are factors like altitude at peak brightness, entry speed, location, and others associated with the radiated energy of a fireball?"
+  },
+  {
+    "objectID": "data_acquisition_blog.html#responsible-data-collection",
+    "href": "data_acquisition_blog.html#responsible-data-collection",
+    "title": "Fireball Brightness",
+    "section": "Responsible Data Collection",
+    "text": "Responsible Data Collection\nI will collect the data through the official NASA/JPL CNEOS Fireball Data API and follow JPL’s Fair Use Policy. As such, I will make only the requests needed for my project, send one request at a time, and save the results so I can reuse them rather than repeatedly requesting the same data. My script will include an application-specific User-Agent with its name, version, and contact information, and will handle errors by backing off before retrying. I will also check the API version in each response. The records describe fireball events and do not contain personal information."
+  },
+  {
+    "objectID": "data_acquisition_blog.html#data-collection",
+    "href": "data_acquisition_blog.html#data-collection",
+    "title": "Fireball Brightness",
+    "section": "Data Collection",
+    "text": "Data Collection\nTo collect the fireball records, I used Python’s requests library to send a GET request to NASA/JPL’s CNEOS Fireball Data API. I included parameters requiring records to have location, altitude, and entry velocity components, and requested the velocity fields. After checking the response for HTTP errors, I converted its JSON content into a pandas DataFrame, using the API’s fields list as column names. I saved this initial version as a CSV file in data/raw, preserving a copy of the data before cleaning.\nTo prepare the data for analysis, I read the CSV back into pandas, converted the date column to datetime format, and converted the latitude, longitude, altitude, energy, impact energy, and velocity columns to numeric values. Someone following a similar process can adjust the API parameters, retrieve JSON records, and convert them into a structured dataset for exploration."
+  },
+  {
+    "objectID": "data_acquisition_blog.html#eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables",
+    "href": "data_acquisition_blog.html#eda-highlights-summary-statistics-summary-graphics-andor-information-about-final-dataset-e.g.-total-sample-size-counts-of-categorical-variables-numerical-summaries-of-numeric-variables",
+    "title": "Fireball Brightness",
+    "section": "EDA highlights: summary statistics, summary graphics, and/or information about final dataset (e.g., total sample size, counts of categorical variables, numerical summaries of numeric variables)",
+    "text": "EDA highlights: summary statistics, summary graphics, and/or information about final dataset (e.g., total sample size, counts of categorical variables, numerical summaries of numeric variables)\nWhat are the most interesting findings of your EDA?\n\nSummary Table\n\n\nRows: 360\nColumns: 13\n\n\n\n\n\n\n\n\n\ncount\nmissing\nmedian\nIQR\nmin\nmax\n\n\n\n\nenergy\n360.0\n0\n7.560000\n16.525000\n1.240000\n37500.000000\n\n\nalt\n360.0\n0\n33.300000\n9.950000\n14.000000\n90.500000\n\n\nspeed\n360.0\n0\n17.442334\n6.689806\n9.765756\n71.071373\n\n\n\n\n\n\n\n\n\nRadiated Energy Distribution\n\n\n\n\n\n\n\n\n\n\n\nAssociations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFurther Resources\nLinks to find further information and /or resources A link to your code in a separate GitHub repo"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "AJ Lapicola",

@@ -137,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">Summary Table</a></li>
   <li><a href="#radiated-energy-distribution" id="toc-radiated-energy-distribution" class="nav-link" data-scroll-target="#radiated-energy-distribution">Radiated Energy Distribution</a></li>
-  <li><a href="#associations" id="toc-associations" class="nav-link" data-scroll-target="#associations">Associations</a></li>
+  <li><a href="#looking-for-patterns" id="toc-looking-for-patterns" class="nav-link" data-scroll-target="#looking-for-patterns">Looking for Patterns</a></li>
   <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">Further Resources</a></li>
   </ul></li>
   </ul>
@@ -170,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Many of us have seen flashes of light streak across the sky, only to vanish in seconds. What we often call “shoooting stars” are in fact, meators. Most meteors are faint, but some blaze so brightly that they’re called fireballs. They begin as small pieces of rock or metal traveling through space; when they plunge into Earth’s atmosphere, they heat the surrounding air and shed material, creating a brilliant glow. NASA’s CNEOS database collects reports of some of these events, offering a glimpse of a dramatic process that usually lasts only moments.</p>
 <p>I’m curious about what these records can tell us about a fireball’s passage through the atmosphere. In particular, I want to explore whether altitude at peak brightness and entry speed are associated with how much energy a fireball radiates. Looking at these characteristics could help me better understand what more energetic fireballs have in common.</p>
-<p>How are factors like altitude at peak brightness, entry speed, location, and others associated with the radiated energy of a fireball?</p>
+<p><strong>How are factors like altitude at peak brightness, entry speed, location, and others associated with the radiated energy of a fireball?</strong></p>
 </section>
 <section id="responsible-data-collection" class="level2">
 <h2 class="anchored" data-anchor-id="responsible-data-collection">Responsible Data Collection</h2>
@@ -186,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The dataset contains 360 fireball records and 13 columns. The three numeric variables used in this analysis, radiated energy, altitude, and calculated speed, have no missing values.</p>
 <section id="summary-table" class="level3">
 <h3 class="anchored" data-anchor-id="summary-table">Summary Table</h3>
-<div id="f118f717" class="cell" data-execution_count="2">
+<div id="7b850734" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
@@ -242,7 +242,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="radiated-energy-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="radiated-energy-distribution">Radiated Energy Distribution</h3>
 <p>The energy histogram shows a strongly right-skewed distribution. Most recorded fireballs fall toward the lower end of the energy range, while a small number have much larger energy estimates, creating a long tail. The median being far below the maximum reflects this spread: a few very high-energy events are quite different from the typical record. A logarithmic scale makes both the concentration of lower-energy observations and the extreme values easier to see.</p>
-<div id="6a35d193" class="cell" data-execution_count="3">
+<div id="c50c2713" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -252,10 +252,10 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="associations" class="level3">
-<h3 class="anchored" data-anchor-id="associations">Associations</h3>
+<section id="looking-for-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="looking-for-patterns">Looking for Patterns</h3>
 <p>The altitude plot shows a slight downward trend: fireballs that reach peak brightness at higher altitudes tend to have lower estimated radiated energy in this sample. However, the points are widely scattered around the line. Events at similar altitudes can have quite different energy estimates, so altitude alone does not closely predict a fireball’s energy.</p>
-<div id="b63f019e" class="cell" data-execution_count="4">
+<div id="c76cc7c2" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -265,7 +265,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p>The speed plot has an almost horizontal trend line, suggesting little clear linear association between calculated entry speed and radiated energy. Most recorded speeds cluster between roughly 10 and 30 km/s, but energy varies widely within that range. The fastest events are not necessarily the most energetic, and the most energetic observation occurs at a more moderate speed.</p>
-<div id="db378b59" class="cell" data-execution_count="5">
+<div id="502051d6" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -279,8 +279,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="further-resources" class="level3">
 <h3 class="anchored" data-anchor-id="further-resources">Further Resources</h3>
-<p>For more information on Fireballs checkout the CNEOS webpage for an overview and introduction: <a href="&quot;https://cneos.jpl.nasa.gov/fireballs/intro.html&quot;">CNEOS Fireballs overview and data</a> If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more: <a href="&quot;https://ssd-api.jpl.nasa.gov/doc/fireball.html&quot;">Fireball Data API documentation</a></p>
-<p>The detailed steps of my analysis can be viewed here: <a href="&quot;https://github.com/ajlapicola/data_acquisition&quot;">Github Repo</a></p>
+<p>For more information on Fireballs checkout the CNEOS webpage for an overview and introduction: <a href="https://cneos.jpl.nasa.gov/fireballs/intro.html">CNEOS Fireballs overview and data</a></p>
+<p>If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more: <a href="https://ssd-api.jpl.nasa.gov/doc/fireball.html">Fireball Data API documentation</a></p>
+<p>The detailed steps of my analysis can be viewed here: <a href="https://github.com/ajlapicola/data_acquisition">Github Repo</a></p>
 <p>Thanks for reading!</p>
 
 

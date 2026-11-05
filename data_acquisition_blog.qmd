@@ -8,7 +8,7 @@ Many of us have seen flashes of light streak across the sky, only to vanish in s
 
 I’m curious about what these records can tell us about a fireball’s passage through the atmosphere. In particular, I want to explore whether altitude at peak brightness and entry speed are associated with how much energy a fireball radiates. Looking at these characteristics could help me better understand what more energetic fireballs have in common.
 
-How are factors like altitude at peak brightness, entry speed, location, and others associated with the radiated energy of a fireball?
+**How are factors like altitude at peak brightness, entry speed, location, and others associated with the radiated energy of a fireball?**
 
 ## Responsible Data Collection
 
@@ -21,6 +21,7 @@ To collect the fireball records, I used Python’s `requests` library to send a 
 To prepare the data for analysis, I read the CSV back into pandas, converted the date column to datetime format, and converted the latitude, longitude, altitude, energy, impact energy, and velocity columns to numeric values. Someone following a similar process can adjust the API parameters, retrieve JSON records, and convert them into a structured dataset for exploration.
 
 ## Exploration Highlights
+
 ```{python}
 #| include: false
 
@@ -49,9 +50,10 @@ fireballs["speed"] = np.sqrt(
 fireballs.head()
 ```
 
-The dataset contains 360 fireball records and 13 columns. The three numeric variables used in this analysis, radiated energy, altitude, and calculated speed, have no missing values. 
+The dataset contains 360 fireball records and 13 columns. The three numeric variables used in this analysis, radiated energy, altitude, and calculated speed, have no missing values.
 
 ### Summary Table
+
 ```{python}
 #| echo: False
 
@@ -105,7 +107,7 @@ plt.title("Distribution of Fireball Radiated Energy")
 plt.show()
 ```
 
-### Associations
+### Looking for Patterns
 
 The altitude plot shows a slight downward trend: fireballs that reach peak brightness at higher altitudes tend to have lower estimated radiated energy in this sample. However, the points are widely scattered around the line. Events at similar altitudes can have quite different energy estimates, so altitude alone does not closely predict a fireball’s energy.
 
@@ -160,12 +162,11 @@ Overall, altitude shows a weak negative pattern with radiated energy, while spee
 A fireball lasts only a moment, but the data let us look back after the flash is gone. Each record captures a few details of that brief event: where it reached peak brightness, how fast it was moving, and how much energy it radiated. Exploring those details didn’t lead to one simple explanation, but it did turn a list of detections into a closer look at events that are usually over before we can take them in.
 
 ### Further Resources
-For more information on Fireballs checkout the CNEOS webpage for an overview and introduction:
-[CNEOS Fireballs overview and data]("https://cneos.jpl.nasa.gov/fireballs/intro.html")
-If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more:
-[Fireball Data API documentation]("https://ssd-api.jpl.nasa.gov/doc/fireball.html")
 
-The detailed steps of my analysis can be viewed here:
-[Github Repo]("https://github.com/ajlapicola/data_acquisition")
+For more information on Fireballs checkout the CNEOS webpage for an overview and introduction: [CNEOS Fireballs overview and data](https://cneos.jpl.nasa.gov/fireballs/intro.html)
+
+If you are interested in checking out the data for yourself, go to the Fireball Data API documentation page to learn more: [Fireball Data API documentation](https://ssd-api.jpl.nasa.gov/doc/fireball.html)
+
+The detailed steps of my analysis can be viewed here: [Github Repo](https://github.com/ajlapicola/data_acquisition)
 
 Thanks for reading!
